@@ -1,12 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-'''
-@File    :   VectorBase.py
-@Time    :   2025/06/20 10:11:13
-@Author  :   不要葱姜蒜
-@Version :   1.1
-@Desc    :   None
-'''
+
 
 import os
 from typing import Dict, List, Optional, Tuple, Union

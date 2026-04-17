@@ -11,16 +11,11 @@ vector.get_vector(EmbeddingModel=embedding)
 vector.persist(path='storage') # 将向量和文档内容保存到storage目录下，下次再用就可以直接加载本地的数据库
 
 
-vector=VectorStore() # 创建一个新的VectorStore对象
-embedding=OpenAIEmbedding()
-vector.load_vector('./storage') # 加载本地的数据库
+# vector=VectorStore() # 创建一个新的VectorStore对象
+# embedding=OpenAIEmbedding()
+# vector.load_vector('./storage') # 加载本地的数据库
 
-question =  """推免具体要求包括什么？
-要求：
-- 每条结论后必须引用证据，格式如 [chunk 0]
-- 如果资料没有写清楚，就回答“未在资料中找到”，不要猜。
-- 最后输出 References: [chunk ...]
-"""
+question ='推免具体要求包括什么？'
 
 source,chunk_id,content,scores = vector.query(question, EmbeddingModel=embedding, k=3)
 

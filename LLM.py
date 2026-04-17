@@ -1,12 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-'''
-@File    :   LLM.py
-@Time    :   2025/06/20 13:50:47
-@Author  :   不要葱姜蒜
-@Version :   1.1
-@Desc    :   None
-'''
+
 import os
 from typing import Dict, List, Optional, Tuple, Union
 from openai import OpenAI
