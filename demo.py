@@ -1,7 +1,7 @@
-from VectorBase import VectorStore
-from utils import ReadFiles
-from LLM import OpenAIChat
-from Embeddings import OpenAIEmbedding
+from VectorBase import VectorStore  #导入vectorstore模块 即储存文本信息的向量数据库模块
+from utils import ReadFiles  #导入utils模块中的ReadFiles类，ReadFiles类用于读取文件内容并进行分割处理
+from LLM import OpenAIChat #导入llm模块中的openaichat模块，调用api接口进行问答
+from Embeddings import OpenAIEmbedding #导入embeddding模块中的OpenAIEmbedding类，调用api接口将文本转换成向量表示，在初次导入和后续添加文本时都需要使用embedding模型将文本转换成向量表示，以便存储在vectorstore中，并在查询时计算相似度分数。
 
 # 没有保存数据库
 docs = ReadFiles('./data').get_content(max_token_len=600, cover_content=150) # 获得data目录下的所有文件内容并分割
