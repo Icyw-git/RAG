@@ -9,7 +9,9 @@ import numpy as np
 from openai import OpenAI
 
 from dotenv import load_dotenv, find_dotenv
-_ = load_dotenv(find_dotenv())
+load_dotenv()
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+OPENAI_BASE_URL = os.getenv("OPENAI_BASE_URL")
 
 
 class BaseEmbeddings:
@@ -81,8 +83,8 @@ class OpenAIEmbedding(BaseEmbeddings):
         super().__init__(path, is_api)
         if self.is_api:
             self.client = client = OpenAI(
-            api_key='sk-qhjesqkxcwedutigqetlvsobnuwxgcguxyqjvpgscsxjtdxa',
-            base_url='https://api.siliconflow.cn/v1'
+            api_key=OPENAI_API_KEY,
+            base_url=OPENAI_BASE_URL
         )
 
     

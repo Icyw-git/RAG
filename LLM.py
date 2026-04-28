@@ -6,8 +6,10 @@ from typing import Dict, List, Optional, Tuple, Union
 from openai import OpenAI
 
 from dotenv import load_dotenv, find_dotenv
-_ = load_dotenv(find_dotenv())
 
+load_dotenv()
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+OPENAI_API_URL = os.getenv("OPENAI_API_URL")
 RAG_PROMPT_TEMPLATE = """
 你是一个严谨的制度/资料问答助手。你必须【只依据上下文证据】回答，不允许使用上下文之外的知识补充、猜测或发挥。
 
@@ -47,12 +49,13 @@ class BaseModel:
 
 class OpenAIChat(BaseModel):
     def __init__(self, model: str = "Qwen/Qwen2.5-32B-Instruct") -> None:
+
         self.model = model
 
     def chat(self, prompt: str, history: List[dict], content: str) -> str:
         client = OpenAI(
-            api_key='sk-qhjesqkxcwedutigqetlvsobnuwxgcguxyqjvpgscsxjtdxa',
-            base_url='https://api.siliconflow.cn/v1'
+            api_key=OPENAI_API_KEY,
+            base_url=OPENAI_API_URL
         )
 
         history.append({'role': 'user', 'content': RAG_PROMPT_TEMPLATE.format(question=prompt, context=content)})
