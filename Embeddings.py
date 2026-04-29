@@ -8,17 +8,17 @@ from typing import Dict, List, Optional, Tuple, Union
 import numpy as np
 from openai import OpenAI
 
-from dotenv import load_dotenv, find_dotenv
+from dotenv import load_dotenv
 load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 OPENAI_BASE_URL = os.getenv("OPENAI_BASE_URL")
 
 
-class BaseEmbeddings:
+class BaseEmbeddings:  #建立一个baseembeddings类，作为所有嵌入模型的基类，定义了一个抽象方法get_embedding和一个静态方法cosine_similarity，get_embedding方法需要在子类中实现，用于获取文本的嵌入向量表示，而cosine_similarity方法用于计算两个向量之间的余弦相似度,之后接入不同模型的时候定义新的子类继承这个基类
     """
     Base class for embeddings
     """
-    def __init__(self, path: str, is_api: bool) -> None:
+    def __init__(self, path: str, is_api: bool) -> None:  #初始化函数第一个参数path表示模型或数据的路径，第二个参数is_api表示是否使用API方式，True表示使用在线API服务，False表示使用本地模型
         """
         初始化嵌入基类
         Args:
@@ -28,7 +28,7 @@ class BaseEmbeddings:
         self.path = path
         self.is_api = is_api
     
-    def get_embedding(self, text: str, model: str) -> List[float]:
+    def get_embedding(self, text: str, model: str) -> List[float]:  #生成文本embedding的抽象方法，在子类中实现
         """
         获取文本的嵌入向量表示
         Args:
@@ -42,7 +42,7 @@ class BaseEmbeddings:
         raise NotImplementedError
     
     @classmethod
-    def cosine_similarity(cls, vector1: List[float], vector2: List[float]) -> float:
+    def cosine_similarity(cls, vector1: List[float], vector2: List[float]) -> float:  #使用类方法装饰器定义一个静态方法，计算两个向量之间的余弦相似度
         """
         计算两个向量之间的余弦相似度
         Args:
@@ -82,7 +82,7 @@ class OpenAIEmbedding(BaseEmbeddings):
     def __init__(self, path: str = '', is_api: bool = True) -> None:
         super().__init__(path, is_api)
         if self.is_api:
-            self.client = client = OpenAI(
+            self.client  = OpenAI(
             api_key=OPENAI_API_KEY,
             base_url=OPENAI_BASE_URL
         )
@@ -97,3 +97,6 @@ class OpenAIEmbedding(BaseEmbeddings):
             return self.client.embeddings.create(input=[text], model=model).data[0].embedding
         else:
             raise NotImplementedError
+
+
+    #新添加的模型可以通过定义一个新的子类来实现，继承BaseEmbeddings类，并实现get_embedding方法，调用相应的API接口或本地模型来获取文本的嵌入向量表示
