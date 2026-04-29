@@ -10,6 +10,8 @@ from dotenv import load_dotenv, find_dotenv
 load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 OPENAI_API_URL = os.getenv("OPENAI_API_URL")
+
+#定义rag的prompt模板，提示llm模型进行回答
 RAG_PROMPT_TEMPLATE = """
 你是一个严谨的制度/资料问答助手。你必须【只依据上下文证据】回答，不允许使用上下文之外的知识补充、猜测或发挥。
 
@@ -37,7 +39,7 @@ References: [chunk N, chunk M]
 """
 
 
-class BaseModel:
+class BaseModel:  #实现一个基类，定义chat和load_model方法，在不同的模型子类中实现
     def __init__(self, model) -> None:
         self.model = model
 
@@ -47,7 +49,7 @@ class BaseModel:
     def load_model(self):
         pass
 
-class OpenAIChat(BaseModel):
+class OpenAIChat(BaseModel):  #这里使用的是openai的chat模型，调用模型api
     def __init__(self, model: str = "Qwen/Qwen2.5-32B-Instruct") -> None:
 
         self.model = model
@@ -58,11 +60,11 @@ class OpenAIChat(BaseModel):
             base_url=OPENAI_API_URL
         )
 
-        history.append({'role': 'user', 'content': RAG_PROMPT_TEMPLATE.format(question=prompt, context=content)})
+        history.append({'role': 'user', 'content': RAG_PROMPT_TEMPLATE.format(question=prompt, context=content)})  #将用户输入的问题和检索到的上下文按照prompt格式进行拼接，将其添加至模型历史中，在对话时可以发送给模型进行回答
         response = client.chat.completions.create(
             model=self.model,
             messages=history,
             max_tokens=2048,
-            temperature=0.1
+            temperature=0.1 #控制模型生成的多样性，值越低生成的内容越保守和确定，值越高生成的内容越多样和有创意，根据实际需求调整这个参数
         )
-        return response.choices[0].message.content
+        return response.choices[0].message.content #这里按照openai的api返回格式进行输出
