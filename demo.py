@@ -30,7 +30,7 @@ if best_score<threshold:
     print("数据库中没有足够的相关内容，我不确定。你可以尝试调整一下问题，或者增加数据库中的内容。")
 else:
     chat = OpenAIChat(model='Qwen/Qwen2.5-32B-Instruct')
-    print(chat.chat(question, [], context))
+    print(chat.chat(question, [], context)) #使用chat函数进行问答，这里没有利用到history参数，后续可以考虑增加对话历史的功能
 
     print('Retrieved top-k chunks:',context)
 
