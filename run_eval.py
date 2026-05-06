@@ -14,9 +14,9 @@ vector = VectorStore()
 embedding = OpenAIEmbedding()
 vector.load_vector("./storage")
 
-llm = OpenAIChat(model=model_name)
+llm = OpenAIChat(model=model_name) # 初始化LLM
 
-def build_context(sources, chunk_ids, contents, scores):
+def build_context(sources, chunk_ids, contents, scores): #构建上下文，将检索到的文档内容和元信息格式化为上下文
     ctx = ""
     for j, chunk in enumerate(contents):
         ctx += (
@@ -43,7 +43,7 @@ with open(gold_path, "r", encoding="utf-8") as fin, \
         best_score = float(scores[0]) if scores else 0.0
         refused = best_score < threshold
 
-        retrieved = []
+        retrieved = [] # 存储检索到的文档信息，包括来源、chunk_id、分数和内容
         for j in range(len(contents)):
             retrieved.append({
                 "source": sources[j],
@@ -52,11 +52,11 @@ with open(gold_path, "r", encoding="utf-8") as fin, \
                 "content": contents[j],
             })
 
-        if refused:
+        if refused: # 如果检索到的文档分数低于阈值，拒绝回答
             answer = ""
         else:
             context = build_context(sources, chunk_ids, contents, scores)
-            answer = llm.chat(question, [], context)
+            answer = llm.chat(question, [], context) # 调用LLM生成回答
 
         pred = {
             "id": qid,
@@ -66,6 +66,6 @@ with open(gold_path, "r", encoding="utf-8") as fin, \
             "retrieved": retrieved,
             "answer": answer,
         }
-        fout.write(json.dumps(pred, ensure_ascii=False) + "\n")
+        fout.write(json.dumps(pred, ensure_ascii=False) + "\n") # 写入预测结果到文件，每个样本占一行
 
-print(f"Done. Wrote {pred_path}")
+print(f"Done. Wrote {pred_path}") # 打印完成信息
