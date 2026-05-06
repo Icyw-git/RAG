@@ -3,21 +3,21 @@ from utils import ReadFiles  #导入utils模块中的ReadFiles类，ReadFiles类
 from LLM import OpenAIChat #导入llm模块中的openaichat模块，调用api接口进行问答
 from Embeddings import OpenAIEmbedding #导入embeddding模块中的OpenAIEmbedding类，调用api接口将文本转换成向量表示，在初次导入和后续添加文本时都需要使用embedding模型将文本转换成向量表示，以便存储在vectorstore中，并在查询时计算相似度分数。
 
-# 没有保存数据库
-docs = ReadFiles('./data').get_content(max_token_len=600, cover_content=150) # 获得data目录下的所有文件内容并分割
-vector = VectorStore(docs)
-embedding = OpenAIEmbedding() # 创建EmbeddingModel
-vector.get_vector(EmbeddingModel=embedding)
-vector.persist(path='storage') # 将向量和文档内容保存到storage目录下，下次再用就可以直接加载本地的数据库
+# # 没有保存数据库
+# docs = ReadFiles('./data').get_content(max_token_len=600, cover_content=150) # 获得data目录下的所有文件内容并分割
+# vector = VectorStore(docs)
+# embedding = OpenAIEmbedding() # 创建EmbeddingModel
+# vector.get_vector(EmbeddingModel=embedding)
+# vector.persist(path='storage') # 将向量和文档内容保存到storage目录下，下次再用就可以直接加载本地的数据库
 
 
-# vector=VectorStore() # 创建一个新的VectorStore对象
-# embedding=OpenAIEmbedding()
-# vector.load_vector('./storage') # 加载本地的数据库
+vector=VectorStore() # 创建一个新的VectorStore对象
+embedding=OpenAIEmbedding()
+vector.load_vector('./storage') # 加载本地的数据库
 
-question ='推免具体要求包括什么？'
+question ='“退役大学生士兵”在推免中最高可加40分，这个加分是计入“各类奖励总分”还是单独计算？'
 
-source,chunk_id,content,scores = vector.query(question, EmbeddingModel=embedding, k=3) #query函数返回与问题最相关的top_k条数据，还有相关性分数，以及对应的source和chunk_id等信息，source和chunk_id可以用来在回答中给出引用，content是实际的文本内容，scores是相似度分数，可以用来判断检索结果的相关程度。
+source,chunk_id,content,scores = vector.query(question, EmbeddingModel=embedding, k=5) #query函数返回与问题最相关的top_k条数据，还有相关性分数，以及对应的source和chunk_id等信息，source和chunk_id可以用来在回答中给出引用，content是实际的文本内容，scores是相似度分数，可以用来判断检索结果的相关程度。
 
 assert len(content) == len(scores)
 context=''
