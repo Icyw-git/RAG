@@ -1,7 +1,7 @@
 import json
 
-gold_path = "eval_draft.jsonl"
-pred_path = "pred.jsonl"
+gold_path = "eval_draft1.jsonl"
+pred_path = "pred1.jsonl"
 k = 5
 
 def load_jsonl(path):
@@ -34,7 +34,7 @@ for qid, g in gold.items():
         continue
 
     should_refuse = (g["answerable"] is False) # 如果标准答案中，该样本不可回答，且预测结果中，该样本被拒绝回答
-    pred_refuse = (p["refused"] is True) # 如果预测结果中，该样本被拒绝回答
+    pred_refuse = (p["refused"] is True)  or ('抱歉' in p.get('answer','')) # 如果
 
     if should_refuse and pred_refuse: # 正确拒绝回答
         TP += 1

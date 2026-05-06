@@ -3,8 +3,8 @@ from VectorBase import VectorStore
 from Embeddings import OpenAIEmbedding
 from LLM import OpenAIChat
 
-gold_path = "eval_draft.jsonl"
-pred_path = "pred.jsonl"
+gold_path = "eval_draft1.jsonl"
+pred_path = "pred1.jsonl"
 
 k = 5
 threshold = 0.65

@@ -28,3 +28,34 @@
 {"id": "q28", "question": "学校体育馆的开放时间和收费标准是怎样的？", "answerable": false, "note": "AUTO_DRAFT: out of KB, should refuse"}
 {"id": "q29", "question": "电院这份竞赛加分规定中提到的“AB杯全国大学生自动化系统应用大赛”，其主办单位是哪里？", "answerable": false, "note": "AUTO_DRAFT: out of KB, should refuse"}
 {"id": "q30", "question": "如果学生对全校公示的最终推免名单有异议，具体的申诉截止日期是公示结束后的几个工作日内？", "answerable": false, "note": "AUTO_DRAFT: out of KB, should refuse"}
+
+{"id": "q31", "question": "电院2020级推免中，美国大学生数学建模竞赛特等奖加多少分？", "answerable": true, "expected_source": "./data\\电院关于高水平科技竞赛获奖本科生推免加分的规定（2020级）.pdf", "expected_chunk_id": null, "note": "AUTO_DRAFT: please verify by reading top-k"}
+{"id": "q32", "question": "电院规定中，同一学生参加多个竞赛获奖，加分如何计算？", "answerable": true, "expected_source": "./data\\电院关于高水平科技竞赛获奖本科生推免加分的规定（2020级）.pdf", "expected_chunk_id": null, "note": "AUTO_DRAFT: please verify by reading top-k"}
+{"id": "q33", "question": "电院2020级推免加分规定适用于哪一级本科生？", "answerable": true, "expected_source": "./data\\电院关于高水平科技竞赛获奖本科生推免加分的规定（2020级）.pdf", "expected_chunk_id": null, "note": "AUTO_DRAFT: please verify by reading top-k"}
+{"id": "q34", "question": "电院规定中，“挑战杯”全国大学生课外学术科技作品竞赛全国二等奖加多少分？", "answerable": true, "expected_source": "./data\\电院关于高水平科技竞赛获奖本科生推免加分的规定（2020级）.pdf", "expected_chunk_id": null, "note": "AUTO_DRAFT: please verify by reading top-k"}
+{"id": "q35", "question": "电院规定中，世界大学生超级计算机竞赛（ASC）全球亚军加多少分？", "answerable": true, "expected_source": "./data\\电院关于高水平科技竞赛获奖本科生推免加分的规定（2020级）.pdf", "expected_chunk_id": null, "note": "AUTO_DRAFT: please verify by reading top-k"}
+{"id": "q36", "question": "电院规定中，全国大学生物联网设计竞赛全国一等奖加多少分？", "answerable": true, "expected_source": "./data\\电院关于高水平科技竞赛获奖本科生推免加分的规定（2020级）.pdf", "expected_chunk_id": null, "note": "AUTO_DRAFT: please verify by reading top-k"}
+{"id": "q37", "question": "电院规定中，若学生同时获得ACM全球金牌和“挑战杯”全国特等奖，加分怎么算？", "answerable": true, "expected_source": "./data\\电院关于高水平科技竞赛获奖本科生推免加分的规定（2020级）.pdf", "expected_chunk_id": null, "note": "AUTO_DRAFT: please verify by reading top-k"}
+{"id": "q38", "question": "电院这份竞赛加分规定由学院的哪个机构负责解释？", "answerable": true, "expected_source": "./data\\电院关于高水平科技竞赛获奖本科生推免加分的规定（2020级）.pdf", "expected_chunk_id": null, "note": "AUTO_DRAFT: please verify by reading top-k"}
+{"id": "q39", "question": "中南财推免生综合评定成绩中，各类奖励总分最高不得超过多少分？", "answerable": true, "expected_source": "./data\\中南财保研工作管理办法.pdf", "expected_chunk_id": null, "note": "AUTO_DRAFT: please verify by reading top-k"}
+{"id": "q40", "question": "中南财推免条件中，非外语专业学生的大学外语加权平均成绩要求是多少？", "answerable": true, "expected_source": "./data\\中南财保研工作管理办法.pdf", "expected_chunk_id": null, "note": "AUTO_DRAFT: please verify by reading top-k"}
+{"id": "q41", "question": "中南财推免工作中，学院公示拟推免名单的公示期不少于几天？", "answerable": true, "expected_source": "./data\\中南财保研工作管理办法.pdf", "expected_chunk_id": null, "note": "AUTO_DRAFT: please verify by reading top-k"}
+{"id": "q42", "question": "中南财推免指标分配中，对上年度浪费指标的学院会如何处理？", "answerable": true, "expected_source": "./data\\中南财保研工作管理办法.pdf", "expected_chunk_id": null, "note": "AUTO_DRAFT: please verify by reading top-k"}
+{"id": "q43", "question": "中南财推免生以特殊学术专长申请加分，需要至少几名本专业教授推荐？", "answerable": true, "expected_source": "./data\\中南财保研工作管理办法.pdf", "expected_chunk_id": null, "note": "AUTO_DRAFT: please verify by reading top-k"}
+{"id": "q44", "question": "中南财推免办法中，退役大学生士兵奖励加分最高可达多少分？", "answerable": true, "expected_source": "./data\\中南财保研工作管理办法.pdf", "expected_chunk_id": null, "note": "AUTO_DRAFT: please verify by reading top-k"}
+{"id": "q45", "question": "中南财推免工作中，学生对学院处理结果不服，应向哪个机构反映？", "answerable": true, "expected_source": "./data\\中南财保研工作管理办法.pdf", "expected_chunk_id": null, "note": "AUTO_DRAFT: please verify by reading top-k"}
+{"id": "q46", "question": "电院2020级推免中，是否有针对国际学生的加分规定？", "answerable": false, "note": "AUTO_DRAFT: out of KB, should refuse"}
+{"id": "q47", "question": "中南财推免办法中，跨专业申请推免的学生是否有额外成绩要求？", "answerable": false, "note": "AUTO_DRAFT: out of KB, should refuse"}
+{"id": "q48", "question": "电院规定中，“台达杯”国际高校绿色智造大赛的主办单位是哪个？", "answerable": false, "note": "AUTO_DRAFT: out of KB, should refuse"}
+{"id": "q49", "question": "中南财推免工作中，学生提交的证明材料需要哪些具体格式？", "answerable": false, "note": "AUTO_DRAFT: out of KB, should refuse"}
+{"id": "q50", "question": "电院2020级推免的报名截止日期是哪一天？", "answerable": false, "note": "AUTO_DRAFT: out of KB, should refuse"}
+{"id": "q51", "question": "中南财推免办法中，艺术类专业学生的数学类课程成绩是否有要求？", "answerable": false, "note": "AUTO_DRAFT: out of KB, should refuse"}
+{"id": "q52", "question": "电院规定中，“英特尔杯”全国大学生软件创新大赛的获奖等级划分是怎样的？", "answerable": false, "note": "AUTO_DRAFT: out of KB, should refuse"}
+{"id": "q53", "question": "中南财推免办法中，学生有挂科记录是否还能申请推免？", "answerable": false, "note": "AUTO_DRAFT: out of KB, should refuse"}
+{"id": "q54", "question": "电院规定中，是否有针对团队获奖的加分细则？", "answerable": false, "note": "AUTO_DRAFT: out of KB, should refuse"}
+{"id": "q55", "question": "中南财推免工作中，学院推免工作小组的具体组长是谁？", "answerable": false, "note": "AUTO_DRAFT: out of KB, should refuse"}
+{"id": "q56", "question": "电院规定中，“AB杯全国大学生自动化系统应用大赛”的参赛对象有哪些？", "answerable": false, "note": "AUTO_DRAFT: out of KB, should refuse"}
+{"id": "q57", "question": "中南财推免办法中，推免生录取后放弃会有什么后果？", "answerable": false, "note": "AUTO_DRAFT: out of KB, should refuse"}
+{"id": "q58", "question": "电院2020级推免中，是否有针对科研论文的加分规定？", "answerable": false, "note": "AUTO_DRAFT: out of KB, should refuse"}
+{"id": "q59", "question": "中南财推免办法中，学生的志愿服务时长要求是多少？", "answerable": false, "note": "AUTO_DRAFT: out of KB, should refuse"}
+{"id": "q60", "question": "电院规定中，是否有针对省级竞赛的加分条款？", "answerable": false, "note": "AUTO_DRAFT: out of KB, should refuse"}

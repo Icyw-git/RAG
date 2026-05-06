@@ -5,12 +5,15 @@ from Embeddings import OpenAIEmbedding
 questions=[]
 with open('eval.jsonl', 'r', encoding='utf-8') as f:
     for line in f:
-        data = json.loads(line) # 解析每行的JSON数据
-        new_question={
-            "id": data["id"],
-            "question":data['question']
-        } #创建一个新的字典，只保留id和question字段
-        questions.append(new_question)
+        if line.strip():
+            data = json.loads(line) # 解析每行的JSON数据
+            new_question={
+                "id": data["id"],
+                "question":data['question'],
+                'answerable':data['answerable'],
+
+            } #创建一个新的字典，只保留id和question字段
+            questions.append(new_question)
 
 print(questions)
 
@@ -29,12 +32,12 @@ for q in questions:
     out.append({
         "id": q["id"],
         "question": q["question"],
-        "answerable": True,
-        "expected_source": sources[0],
-        "expected_chunk_id": chunk_ids[0],
-        "note": "AUTO_DRAFT: please verify by reading top-k"
+        "answerable": q['answerable'],
+        "expected_source": sources[0] if q['answerable'] else None,
+        "expected_chunk_id": chunk_ids[0] if q['answerable'] else None,
+        "note": "AUTO_DRAFT: please verify by reading top-k" if q['answerable'] else 'AUTO_DRAFT: out of KB, should refuse',
     })
 
-with open("eval_draft.jsonl","w",encoding="utf-8") as f:
+with open("eval_draft1.jsonl","w",encoding="utf-8") as f:
     for row in out:
         f.write(json.dumps(row, ensure_ascii=False) + "\n") # 将每个字典对象转换为JSON字符串，并写入文件，每行一个JSON对象
