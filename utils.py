@@ -13,7 +13,7 @@ import tiktoken
 from bs4 import BeautifulSoup
 import re
 
-enc = tiktoken.get_encoding("cl100k_base")
+enc = tiktoken.get_encoding("cl100k_base") #tiktoken用于将文本编码为token,为什么不用tokenizer呢？因为tiktoken是openai官方提供的一个库，专门用于处理文本和token之间的转换，能够更准确地计算文本的token数量，适用于各种openai模型，而tokenizer通常是针对特定模型或任务设计的，可能不适用于所有情况，因此在这里选择使用tiktoken来处理文本的token化和编码问题。
 
 
 class ReadFiles:
@@ -47,7 +47,7 @@ class ReadFiles:
         for file in self.file_list:
             content = self.read_file_content(file)
             chunk_content = self.get_chunk(
-                content, max_token_len=max_token_len, cover_content=cover_content)
+                content, max_token_len=max_token_len, cover_content=cover_content) #将文本分块，最大的token长度是max_token_len,每个块之间覆盖的内容长度是cover_content,设计cover的原因是帮助模型更好理解上下文
 
             for i, chunk in enumerate(chunk_content):
                 docs.append({'source': file, 'chunk_id': i, 'text': chunk})
