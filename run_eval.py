@@ -7,7 +7,7 @@ gold_path = "eval_draft.jsonl"
 pred_path = "pred.jsonl"
 
 k = 5
-threshold = 0.35
+threshold = 0.65
 model_name = "Qwen/Qwen2.5-32B-Instruct"
 
 vector = VectorStore()
