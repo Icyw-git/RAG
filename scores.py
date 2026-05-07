@@ -106,4 +106,4 @@ with open("badcases.jsonl", "w", encoding="utf-8") as f:
         f.write(json.dumps(x, ensure_ascii=False) + "\n")
 print("\nWrote badcases.jsonl")
 
-#
+# 以上代码实现了对问答系统的评测，主要包括两个方面：1) 检索性能评测，计算检索到的文档来源和chunk的命中率；2) 拒答性能评测，计算模型在拒绝回答上的分类指标（precision、recall、f1）。同时还记录了错误的样本，方便后续分析和改进模型表现。
