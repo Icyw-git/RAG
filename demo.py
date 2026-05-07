@@ -32,6 +32,8 @@ threshold=0.65
 chat = OpenAIChat(model='Qwen/Qwen2.5-32B-Instruct')
 print(chat.chat(question, [], context)) #使用chat函数进行问答，这里没有利用到history参数，后续可以考虑增加对话历史的功能
 
+
+
 print('Retrieved top-k chunks:',context)
 
 print(best_score)

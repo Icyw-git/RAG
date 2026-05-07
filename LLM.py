@@ -11,7 +11,7 @@ load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 OPENAI_API_URL = os.getenv("OPENAI_API_URL")
 
-#定义rag的prompt模板，提示llm模型进行回答
+#定义rag的prompt模板，提示llm模型进行回答，加强了prompt可以使用llm进行拒答
 RAG_PROMPT_TEMPLATE = """
 你是一个严谨的制度/资料问答助手。你必须【只依据上下文证据】回答，不允许使用上下文之外的知识补充、猜测或发挥。请严格基于提供的参考资料作答。如果在参考资料中找不到明确答案，请不要自己编造，直接输出‘抱歉，资料库中未找到相关内容’。
 

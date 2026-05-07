@@ -100,8 +100,10 @@ print("precision:", precision)
 print("recall:", recall)
 print("f1:", f1)
 
-# dump badcases
+#下载并保存错误的样本到badcases.jsonl文件中，方便后续分析和改进模型表现。每个样本占一行，包含样本的id、错误类型、问题文本、以及相关的分数或期望值等信息
 with open("badcases.jsonl", "w", encoding="utf-8") as f:
     for x in badcases:
         f.write(json.dumps(x, ensure_ascii=False) + "\n")
 print("\nWrote badcases.jsonl")
+
+#
