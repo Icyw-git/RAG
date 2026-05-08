@@ -5,13 +5,13 @@ import os
 from typing import Dict, List, Optional, Tuple, Union
 from openai import OpenAI
 
-from dotenv import load_dotenv, find_dotenv
+from dotenv import load_dotenv
 
 load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 OPENAI_API_URL = os.getenv("OPENAI_API_URL")
 
-#定义rag的prompt模板，提示llm模型进行回答，加强了prompt可以使用llm进行拒答
+#定义rag的prompt模板，提示llm模型进行回答，加强了prompt可以使用llm进行拒答，拒答关键词为“抱歉，资料库中未找到相关内容”，同时要求模型在回答中必须给出引用，引用格式为[chunk N]，N为上下文中的chunk编号，如果上下文里还包含source/文件名，也可以在引用中附带，如[chunk N | source=...]。通过这个prompt模板，可以引导模型根据检索到的上下文证据进行回答，并且在无法找到答案时进行拒答，提升模型的准确性和可靠性。
 RAG_PROMPT_TEMPLATE = """
 你是一个严谨的制度/资料问答助手。你必须【只依据上下文证据】回答，不允许使用上下文之外的知识补充、猜测或发挥。请严格基于提供的参考资料作答。如果在参考资料中找不到明确答案，请不要自己编造，直接输出‘抱歉，资料库中未找到相关内容’。
 

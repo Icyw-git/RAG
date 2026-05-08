@@ -33,7 +33,7 @@ for q in questions:
         "id": q["id"],
         "question": q["question"],
         "answerable": q['answerable'],
-        "expected_source": sources[0] if q['answerable'] else None,
+        "expected_source": sources[0] if q['answerable'] else None, #如果不是answerable的样本就不填source和chunk_id，避免误导模型
         "expected_chunk_id": chunk_ids[0] if q['answerable'] else None,
         "note": "AUTO_DRAFT: please verify by reading top-k" if q['answerable'] else 'AUTO_DRAFT: out of KB, should refuse',
     })
@@ -41,3 +41,6 @@ for q in questions:
 with open("eval_draft1.jsonl","w",encoding="utf-8") as f:
     for row in out:
         f.write(json.dumps(row, ensure_ascii=False) + "\n") # 将每个字典对象转换为JSON字符串，并写入文件，每行一个JSON对象
+
+
+#这个脚本的作用是获取每个样本的top_1检索结果，作为模型回答的建议证据，并标注出哪些样本应该拒答。通过分析这些建议证据和拒答样本，可以评估模型的检索能力和拒答策略的合理性，为后续优化提供参考依据。

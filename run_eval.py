@@ -31,7 +31,7 @@ with open(gold_path, "r", encoding="utf-8") as fin, \
     for line in fin:
         if not line.strip():
             continue
-        gold = json.loads(line)
+        gold = json.loads(line) #导入标准集数据
 
         qid = gold["id"]
         question = gold["question"]
@@ -41,10 +41,10 @@ with open(gold_path, "r", encoding="utf-8") as fin, \
         )
 
         best_score = float(scores[0]) if scores else 0.0
-        refused = best_score < threshold
+        refused = best_score < threshold  #这里根据设定的阈值进行判断是否拒答
 
         retrieved = [] # 存储检索到的文档信息，包括来源、chunk_id、分数和内容
-        for j in range(len(contents)):
+        for j in range(len(contents)): #保存top_5的检索信息，便于之后的评估分析
             retrieved.append({
                 "source": sources[j],
                 "chunk_id": int(chunk_ids[j]) if chunk_ids[j] is not None else None,
@@ -52,11 +52,11 @@ with open(gold_path, "r", encoding="utf-8") as fin, \
                 "content": contents[j],
             })
 
-        if refused: # 如果检索到的文档分数低于阈值，拒绝回答
+        if refused: # 如果检索到的文档分数低于阈值，拒绝回答，这是第一层的拒答逻辑，后续可以根据llm的回答进行第二层拒答
             answer = ""
         else:
             context = build_context(sources, chunk_ids, contents, scores)
-            answer = llm.chat(question, [], context) # 调用LLM生成回答
+            answer = llm.chat(question, [], context) # 调用LLM生成回答，使用前面构建的context作为模型输入
 
         pred = {
             "id": qid,
