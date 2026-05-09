@@ -1,4 +1,5 @@
 import json
+from eval_logger import EvalLogger
 
 gold_path = "eval_draft1.jsonl"
 pred_path = "pred1.jsonl"
@@ -79,9 +80,46 @@ for qid, g in gold.items():
 
 # metrics 计算命中率    
 def safe_div(a, b):
-    return a / b if b else 0.0 # 避免除除0的情况
+    return a / b if b else 0.0 # 避免除0的情况
 
-print("=== Retrieval (only answerable=True) ===")
+# ====== 收集指标和配置 ======
+metrics = {
+    "total_ans": total_ans,
+    "hit_source@1": safe_div(hit_source_at1, total_ans),
+    f"hit_source@{k}": safe_div(hit_source_atk, total_ans),
+    "hit_chunk@1": safe_div(hit_chunk_at1, total_ans),
+    f"hit_chunk@{k}": safe_div(hit_chunk_atk, total_ans),
+    "TP": TP, "FP": FP, "FN": FN, "TN": TN,
+    "precision": safe_div(TP, TP + FP),
+    "recall": safe_div(TP, TP + FN),
+}
+
+# precision, recall, f1 计算
+precision = metrics["precision"]
+recall = metrics["recall"]
+metrics["f1"] = safe_div(2 * precision * recall, precision + recall)
+
+config = {
+    "k": k,
+    "threshold": 0.65,
+    "model": "Qwen/Qwen2.5-32B-Instruct",
+    "retrieval_mode": "vector",
+    "gold_path": gold_path,
+    "pred_path": pred_path,
+    "notes": "baseline - 纯向量检索"
+}
+
+# ====== 使用 EvalLogger 记录日志 ======
+logger = EvalLogger()
+logger.log_config(config)
+logger.log_metrics(metrics)
+logger.save_predictions(pred_path)
+logger.save_badcases(badcases)
+logger.update_summary_csv(config, metrics)
+logger.print_summary(metrics)
+
+# ====== 仍然保留原始输出（控制台可见） ======
+print("\n=== Retrieval (only answerable=True) ===")
 print("answerable_total:", total_ans)
 print("hit_source@1:", safe_div(hit_source_at1, total_ans))
 print(f"hit_source@{k}:", safe_div(hit_source_atk, total_ans))
@@ -89,21 +127,15 @@ print("hit_chunk@1:", safe_div(hit_chunk_at1, total_ans))
 print(f"hit_chunk@{k}:", safe_div(hit_chunk_atk, total_ans))
 
 print("\n=== Refusal (all samples, positive=should_refuse) ===")
-# precision = TP / (TP + FP)，即模型预测为拒绝回答的样本中，有多少是正确的拒绝回答
-# recall = TP / (TP + FN)，即标准答案中，有多少个拒绝回答，模型都能正确预测为拒绝回答
-# f1 = 2 * precision * recall / (precision + recall)，即precision和recall的调和平均值
-precision = safe_div(TP, TP + FP)
-recall = safe_div(TP, TP + FN)
-f1 = safe_div(2 * precision * recall, precision + recall)
 print("TP FP FN TN:", TP, FP, FN, TN)
 print("precision:", precision)
 print("recall:", recall)
-print("f1:", f1)
+print("f1:", metrics["f1"])
 
-#下载并保存错误的样本到badcases.jsonl文件中，方便后续分析和改进模型表现。每个样本占一行，包含样本的id、错误类型、问题文本、以及相关的分数或期望值等信息
+# 下载并保存错误的样本到badcases.jsonl文件中
 with open("badcases.jsonl", "w", encoding="utf-8") as f:
     for x in badcases:
         f.write(json.dumps(x, ensure_ascii=False) + "\n")
 print("\nWrote badcases.jsonl")
 
-# 以上代码实现了对问答系统的评测，主要包括两个方面：1) 检索性能评测，计算检索到的文档来源和chunk的命中率；2) 拒答性能评测，计算模型在拒绝回答上的分类指标（precision、recall、f1）。同时还记录了错误的样本，方便后续分析和改进模型表现。
+# 以上代码实现了对问答系统的评测，主要包括两个方面：1) 检索性能评测，计算检索到的文档来源和chunk的命中率；2) 拒答性能评测，计算模型在拒绝回答上的分类指标（precision、recall、f1）。同时还记录了错误的样本，方便后续分析和改进模型表现。同时还使用EvalLogger将评测结果记录到eval_logs/目录，支持多run历史对比。
