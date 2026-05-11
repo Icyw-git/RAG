@@ -5,9 +5,9 @@ import json
 
 class HybridSearch:
     def __init__(self,vector_store,doc_path):
-        self.vector_search=vector_store
-        self.doc_path=doc_path
-        self.docs=self._load_texts(doc_path)
+        self.vector_search=vector_store #保存的向量数据
+        self.doc_path=doc_path #文本数据的路径
+        self.docs=self._load_texts(doc_path) #加载文本数据，加载后docs是一个列表，每个元素是一个字典，包含source、chunk_id、text等字段
         
 
     @staticmethod
@@ -54,6 +54,32 @@ class HybridSearch:
                 'content':self.docs[item[0]]['text'],
             })
             
+        rrf_scores={}
+        bm25_id_rank={item['chunk_id']:i+1 for i,item in enumerate(bm25_top30_list)}
+        vector_id_rank={item['chunk_id']:i+1 for i,item in enumerate(vector_top30_list)}
+        for item in bm25_top30_list:
+            rrf_scores[item['chunk_id']]=rrf_scores.get(item['chunk_id'],0)+1/(60+bm25_id_rank[item['chunk_id']])
+        for item in vector_top30_list:
+            rrf_scores[item['chunk_id']]=rrf_scores.get(item['chunk_id'],0)+1/(60+vector_id_rank[item['chunk_id']])
+
+        rrf_topk=sorted(rrf_scores.items(),key=lambda x:x[1],reverse=True)[:k]
+        sources=[]
+        chunk_ids=[]
+        contents=[]
+        scores=[]
+        for item in rrf_topk:
+            source=self.docs[item[0]]['source']
+            chunk_id=item[0]
+            content=self.docs[item[0]]['text']
+            score=item[1]
+            sources.append(source)
+            chunk_ids.append(chunk_id)
+            contents.append(content)
+            scores.append(score)
+        return sources,chunk_ids,contents,scores
+    
+
+
             
 
 
