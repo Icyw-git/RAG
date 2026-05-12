@@ -30,7 +30,7 @@ class HybridSearch:
         vector_scores=[]
         # ========== 错误1已修复：原来是 self.vector_search（对象），改为 self.vector_search.vectors（列表） ==========
         for vector in self.vector_search.vectors:
-            score=VectorStore.get_similarity(query_vector,vector) #计算查询向量与每个文本向量的余弦相似度，得到一个分数，分数越高表示文本与查询越相关
+            score=self.vector_search.get_similarity(query_vector,vector) #计算查询向量与每个文本向量的余弦相似度，得到一个分数，分数越高表示文本与查询越相关
             vector_scores.append(score)
         
         #对两个分数取前三十，得到两个列表，每个列表包含30个元组，元组的第一个元素是文本的索引，第二个元素是分数
