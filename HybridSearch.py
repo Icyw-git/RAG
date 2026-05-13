@@ -78,4 +78,4 @@ class HybridSearch:
             chunk_ids.append(chunk_id)
             contents.append(content)
             scores.append(score)
-        return sources,chunk_ids,contents,scores #与余弦相似度分数返回一致，返回文本的来源、chunk_id、文本内容和RRF分数，方便后续处理
+        return sources,chunk_ids,contents,scores,max(vector_scores) if vector_scores else 0.0 #返回向量余弦最高分，专门用于拒答判断
