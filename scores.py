@@ -2,7 +2,7 @@ import json
 from eval_logger import EvalLogger
 
 gold_path = "eval_draft1.jsonl"
-pred_path = "pred1.jsonl"
+pred_path = "pred_hybrid.jsonl"
 k = 5
 
 def load_jsonl(path):
