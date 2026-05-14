@@ -27,12 +27,13 @@ context=''
 for i,chunk in enumerate(content):
     context+=f'\n\n====chunk {i},score:{scores[i]:.4f},source:{source[i]},chunk_id:{chunk_id[i]}====\n{chunk}\n' #将检索到的文本内容按照一定的格式拼接成一个字符串，作为回答问题的上下文信息，格式包括chunk的编号、相似度分数、source和chunk_id等信息，方便后续在回答中引用和说明。
 
-best_score=max_cos if max_cos else 0.0 #增加拒答机制，如果最高的相似度分数低于某个阈值，就拒绝回答，提示用户数据库中没有足够的相关内容。
+best_score=max_cos if max_cos else 0.0 #增加拒答机制，如果最高的相似度分数低于某个阈值，就拒绝回答，提示用户数据库中没有足够的相关内容。 这里使用文本块里面最大的向量分数，如果仍然低于阈值，则认定为拒答
 threshold=0.65
 if best_score<threshold:
     print("数据库中没有足够的相关内容，我不确定。你可以尝试调整一下问题，或者增加数据库中的内容。")
-else:
-    chat = OpenAIChat(model='Qwen/Qwen2.5-32B-Instruct')
+else: #该段可以使用第二次拒答，增加拒答准确率
+
+    chat = OpenAIChat(model='Qwen/Qwen2.5-32B-Instruct') #创建一个新的OpenAIChat对象，指定使用的模型，这里使用Qwen2.5-32B-Instruct模型，这个模型是一个大规模的语言模型，具有较强的理解和生成能力，适合用于问答任务。
     print(chat.chat(question, [], context)) #使用chat函数进行问答，这里没有利用到history参数，后续可以考虑增加对话历史的功能
 
 
