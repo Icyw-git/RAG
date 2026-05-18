@@ -42,5 +42,3 @@ else: #该段可以使用第二次拒答，增加拒答准确率
 
     print(best_score)
 
-
-

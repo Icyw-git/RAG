@@ -11,7 +11,8 @@ class HybridSearch:
         self.docs=self._load_texts(doc_path) #加载文本数据，加载后docs是一个列表，每个元素是一个字典，包含source、chunk_id、text等字段
         tokenized_corpus=[self.docs[i]['text'] for i in range(len(self.docs))] #获取文本数据中的text字段，组成一个列表，每个元素是一个文本字符串
         self.bm25=BM25Okapi(tokenized_corpus) #进行分词处理，构建BM25模型
-        self.reranker=rerank(model_name='BAAI/bge-reranker-v2-m3',use_fp16=True) #初始化重排序器，指定使用的模型和是否使用fp16精度，这个对象是一个可调用对象，可以直接调用来进行rerank操作
+        # 注意：之前 reranker 在模块顶层实例化，import 时立刻加载 2.27GB 模型；现在放在 __init__ 里，只在创建对象时加载
+        self.reranker=rerank(model_name='BAAI/bge-reranker-v2-m3',use_fp16=True)
 
 
     @staticmethod
@@ -24,6 +25,7 @@ class HybridSearch:
         return docs
     
     def build_candidate(self,query_text,Embedding_model,k=30):
+        # BUG3: BM25 分词——旧版写 list(query_text) 会把中文句子拆成单个汉字，BM25 内置分词器失效；应直接传字符串
         bm25_score=self.bm25.get_scores(query_text)
         query_vector=Embedding_model.get_embedding(query_text) #将查询文本转换成向量表示，得到一个向量列表，长度为向量维度
         vector_scores=[]
@@ -31,7 +33,8 @@ class HybridSearch:
             score=self.vector_search.get_similarity(query_vector,vector)
             vector_scores.append(score)
         
-        max_score=max(vector_scores) if vector_scores else 0.0 #获取向量搜索的最高分数，作为拒答的依据，如果没有向量搜索结果，则默认为0.0
+        # BUG4: 返回值缺失——旧版 build_candidate 只返回 candidate，没返回 max_score（向量余弦最高分），导致 query() 拿不到正确的拒答分数
+        max_score=max(vector_scores) if vector_scores else 0.0
         
         bm25_top30=sorted(enumerate(bm25_score),key=lambda x:x[1],reverse=True)[:30]
         vector_top30=sorted(enumerate(vector_scores),key=lambda x:x[1],reverse=True)[:30]
@@ -57,14 +60,17 @@ class HybridSearch:
                 'score':score,
             })
 
+        # 修复后：同时返回候选列表和向量余弦最高分（用于拒答）
         return candidate,max_score
 
 
 
         
+    # BUG6: 签名缺参——旧版 def query(self,query_text,Embedding_model): 没有 k 参数，run_eval.py 传 k=k 时报 TypeError
     def query(self,query_text,Embedding_model,k=5):
         candidate,max_score=self.build_candidate(query_text,Embedding_model,k=20)
-        best_score=max_score if max_score else 0.0 #增加拒答机制，如果最高的相似度分数低于某个阈值，就拒绝回答，提示用户数据库中没有足够的相关内容。 这里使用文本块里面最大的向量分数，如果仍然低于阈值，则认定为拒答
+        # BUG5: 拒答量纲混乱——旧版用 RRF 融合分（~0.01-0.03）和 0.65 阈值比较，所有问题都被误判为拒答；修复后用向量余弦最高分（0~1），和阈值同一量纲
+        best_score=max_score if max_score else 0.0
 
         top_k_chunks=self.reranker.rerank(query_text,candidate,topk=k) #对混合检索的结果进行重排序，得到一个新的列表，包含topk个分数最高的候选文本
         
