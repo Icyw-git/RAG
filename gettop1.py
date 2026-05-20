@@ -3,7 +3,7 @@ from VectorBase import VectorStore
 from Embeddings import OpenAIEmbedding
 
 questions=[]
-with open('eval.jsonl', 'r', encoding='utf-8') as f:
+with open('eval_top10.jsonl', 'r', encoding='utf-8') as f:
     for line in f:
         if line.strip():
             data = json.loads(line) # 解析每行的JSON数据
@@ -38,7 +38,7 @@ for q in questions:
         "note": "AUTO_DRAFT: please verify by reading top-k" if q['answerable'] else 'AUTO_DRAFT: out of KB, should refuse',
     })
 
-with open("eval_draft1.jsonl","w",encoding="utf-8") as f:
+with open("eval_top10.jsonl","w",encoding="utf-8") as f:
     for row in out:
         f.write(json.dumps(row, ensure_ascii=False) + "\n") # 将每个字典对象转换为JSON字符串，并写入文件，每行一个JSON对象
 

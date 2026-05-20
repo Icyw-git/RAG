@@ -36,8 +36,6 @@ else: #该段可以使用第二次拒答，增加拒答准确率
     chat = OpenAIChat(model='Qwen/Qwen2.5-32B-Instruct') #创建一个新的OpenAIChat对象，指定使用的模型，这里使用Qwen2.5-32B-Instruct模型，这个模型是一个大规模的语言模型，具有较强的理解和生成能力，适合用于问答任务。
     print(chat.chat(question, [], context)) #使用chat函数进行问答，这里没有利用到history参数，后续可以考虑增加对话历史的功能
 
-
-
     print('Retrieved top-k chunks:',context)
 
     print(best_score)

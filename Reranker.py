@@ -21,7 +21,7 @@ class rerank:
 
         # BUG2: API 变更——新版 FlagEmbedding 废弃 __call__，必须用 compute_score()；不加 normalize=True 返回原始 logits（可能负数），与阈值 0.65 不兼容
         scores=self.reranker.compute_score(pairs, normalize=True)
-        for score,item in zip(scores,candidate):
+        for score,item in zip(scores,candidate): #zip用法是将两个列表打包成一个可迭代对象
             item['rerank_score']=score #将分数添加到候选文本的字典中，方便后续排序和筛选
 
         rerank=sorted(candidate,key=lambda x:x['rerank_score'],reverse=True) #对候选文本按照rerank_score进行排序，得到一个新的列表，包含topk个分数最高的候选文本
