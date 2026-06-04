@@ -248,7 +248,7 @@ class SingletonMeta(type):
 
     def __call__(cls, *args, **kwargs):
         if cls not in cls._instances:
-            cls._instances[cls] = super().__call__(*args, **kwargs) #__call__方法创建类实例
+            cls._instances[cls] = super().__call__(*args, **kwargs) #__call__方法创建类实例,这里重写了__call__方法，cls是传入的需要创建的ModelConfig类，创建时会寻找ModelConfig的元类，由元类进行创建，这里重写了元类和__call__方法，创建时仍然使用type类
         return cls._instances[cls]
 
 
@@ -291,15 +291,16 @@ def singleton_exercise(cls):
       5. get_instance 返回 get_instance
     """
     # ===== 你的代码写在这里 =====
-    pass  # TODO: 创建 instances 字典
+    instance_dict={}  # TODO: 创建 instances 字典
 
     # ===== 你的代码写在这里 =====
     @wraps(cls)
     def get_instance(*args, **kwargs):
         # ===== 你的代码写在这里 =====
-        pass  # TODO: 检查 cls 是否在 instances 中
+        if cls not in instance_dict:
+            instance_dict[cls] = cls(*args,**kwargs) # TODO: 检查 cls 是否在 instances 中
         # ===== 你的代码写在这里 =====
-        pass  # TODO: 返回实例
+        return instance_dict[cls]   # TODO: 返回实例
 
     return get_instance
 
