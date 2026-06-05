@@ -205,7 +205,7 @@ def singleton(cls):
     @wraps(cls)
     def get_instance(*args, **kwargs):
         if cls not in instances:
-            instances[cls] = cls(*args, **kwargs) #这里保证了单例模式，若创建的类已经存在，不能更新参数
+            instances[cls] = cls(*args, **kwargs) #这里保证了单例模式，若创建的类已经存在，不能更新参数 使用构造函数初始化实例
         return instances[cls]
 
     return get_instance
@@ -492,11 +492,21 @@ class LLMFactory:
         TODO: 补全下面的创建逻辑
         """
         provider = config.get("provider", "").lower()
+        model=config.get('model','').lower()
+        api_key=config.get('api_key','').lower()
+
+
 
         # ===== 你的代码写在这里 =====
-        pass  # TODO: 根据 provider 创建对应的 LLM 客户端
+        if provider=='openai':
+            return OpenAIClient()
+        elif provider=='ollama':
+            return OllamaClient()
+        else:
+            raise ValueError(f'Unexpected value:{provider}')
+          # TODO: 根据 provider 创建对应的 LLM 客户端
         # ===== 你的代码写在这里 =====
-        pass  # TODO: 处理其他 provider
+          # TODO: 处理其他 provider
         
 
 # ── 🚀 RAG 实战：可配置的多 LLM 切换 ──
@@ -701,7 +711,8 @@ class VectorSearchFactory(SearchFactory):
     # TODO: 实现 create_search 方法
     def create_search(self) -> SearchStrategy:
         # ===== 你的代码 =====
-        pass  # TODO: 返回 VectorSearch 实例
+        return VectorSearch()
+      # TODO: 返回 VectorSearch 实例
 
 
 class KeywordSearchFactory(SearchFactory):
@@ -709,7 +720,8 @@ class KeywordSearchFactory(SearchFactory):
     # TODO: 实现 create_search 方法
     def create_search(self) -> SearchStrategy:
         # ===== 你的代码 =====
-        pass  # TODO: 返回 KeywordSearch 实例
+        return KeyboardInterrupt()
+      # TODO: 返回 KeywordSearch 实例
 
 
 class HybridSearchFactory(SearchFactory):
@@ -717,7 +729,7 @@ class HybridSearchFactory(SearchFactory):
     # TODO: 实现 create_search 方法
     def create_search(self) -> SearchStrategy:
         # ===== 你的代码 =====
-        pass  # TODO: 返回 HybridSearch 实例
+        return HybridSearch()  # TODO: 返回 HybridSearch 实例
 
 
 # ── 🚀 RAG 实战：可切换的检索策略 ──
